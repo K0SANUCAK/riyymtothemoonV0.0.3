@@ -287,7 +287,7 @@ class _UserMusicssState extends State<UserMusicss> {
 
   @override
   Widget build(BuildContext context) {
-    return MusicListUser(_usermusics);
+    return Center();
   }
 }
 

@@ -43,6 +43,52 @@ class Movies {
         vote_average: json["vote_average"],
         overview: json["overview"]);
   }
+
+}
+
+class Youtube {
+
+  final String name;
+  final String key;
+
+
+  Youtube(
+      {required this.name,
+        required this.key,
+        });
+
+  factory Youtube.fromJson(Map<String, dynamic> json) {
+    return Youtube(
+        name: json["name"],
+        key: json["key"]);
+  }
+
+
+}
+class Search {
+
+  final String name;
+  final int key;
+ // final String poster;
+
+
+  Search(
+      {required this.name,
+        required this.key,
+        //required this.poster
+      });
+
+  factory Search.fromJson(Map<String, dynamic> json) {
+    return Search(
+        name: json["original_title"],
+        key: json["id"],
+        /*poster: "https://www.themoviedb.org/t/p/w533_and_h300_bestv2" +
+            json["poster_path"]*/
+    );
+
+  }
+
+
 }
 
 Future<List<Movies>>? fetchAllMovies() async {
@@ -57,16 +103,28 @@ Future<List<Movies>>? fetchAllMovies() async {
     throw Exception("Failed to load movies!");
   }
 }
-Future<List<Movies>>? fetchSearch() async {
+
+Future<List<Youtube>>? fetchYoutube(int id) async {
   final response = await http.get(Uri.parse(
-      "https://api.themoviedb.org/3/search/movie?api_key=f45ed86c0a3a4ffa16e3d9f8118fc6f8&language=en-US&query=hello&page=1&include_adult=false"));
+      "https://api.themoviedb.org/3/movie/$id/videos?api_key=f45ed86c0a3a4ffa16e3d9f8118fc6f8&language=en-US"));
 
   if (response.statusCode == 200) {
     final result = jsonDecode(response.body);
     Iterable list = result["results"];
-    return list.map((movie) => Movies.fromSearchJson(movie)).toList();
+    return list.map((youtube) => Youtube.fromJson(youtube)).toList();
   } else {
     throw Exception("Failed to load movies!");
   }
 }
+Future<List<Search>>? fetchSearch(String word) async {
+  final response = await http.get(Uri.parse(
+      "https://api.themoviedb.org/3/search/movie?api_key=f45ed86c0a3a4ffa16e3d9f8118fc6f8&language=en-US&query=$word"));
 
+  if (response.statusCode == 200) {
+    final result = jsonDecode(response.body);
+    Iterable list = result["results"];
+    return list.map((search) => Search.fromJson(search)).toList();
+  } else {
+    throw Exception("Failed to load movies!");
+  }
+}

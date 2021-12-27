@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:riyym/movie/search_model.dart';
 import 'package:riyym/movie/search_screen.dart';
+import 'package:riyym/music/music_general.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'detail_movie_page.dart';
 
@@ -17,6 +19,7 @@ class Film extends StatefulWidget {
 }
 
 class _FilmState extends State<Film> {
+  TextEditingController controller=TextEditingController();
   int currentIndex = 0;
   int activeIndex = 0;
 
@@ -52,6 +55,7 @@ class _FilmState extends State<Film> {
                     color: Color.fromARGB(51, 58, 76, 255),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: TextField(
+                  controller: controller,
                   autofocus: false,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
@@ -63,7 +67,7 @@ class _FilmState extends State<Film> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SearchPage()
+                            builder: (context) => SearchPage(controller.text)
                           ),
                         );
                       },

@@ -8,21 +8,14 @@ import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailMoviePage extends StatefulWidget {
-  final Movies movie;
+  final Musics music;
 
-  DetailMoviePage(this.movie);
+  DetailMoviePage(this.music);
   @override
   _DetailMoviePageState createState() => _DetailMoviePageState();
 }
 
 class _DetailMoviePageState extends State<DetailMoviePage> {
-
-  void customLaunch(command) async{
-    print(command, );
-
-      await launch(command,forceSafariVC: false);
-
-  }
   /* _launchURL(String url) async {
   if (Platform.isIOS) {
     if (await canLaunch('https://www.youtube.com/watch?v=$url')) {
@@ -50,7 +43,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          widget.movie.title,
+          widget.music.title,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 22,
@@ -77,7 +70,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                  widget.movie.poster,
+                  widget.music.poster,
                 ),
                 fit: BoxFit.cover,
               ),
@@ -102,7 +95,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.movie.title,
+                      widget.music.title,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 32,
@@ -122,7 +115,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                     Row(
                       children: [
                         Text(
-                          widget.movie.vote_average.toString(),
+                          widget.music.imdbId.toString(),
                           style: const TextStyle(
                             color: Colors.yellow,
                             fontSize: 17,
@@ -131,41 +124,20 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                         const SizedBox(width: 5),
                         ...List.generate(
                           5,
-                          (index) => Icon(
+                              (index) => Icon(
                             Icons.star,
                             color: (index <
-                                    (widget.movie.vote_average / 2).floor())
+                                (widget.music.imdbId / 2).floor())
                                 ? Colors.yellow
                                 : Colors.white30,
                           ),
                         ),
-                        FutureBuilder<List<Youtube>>(
-                            future: fetchYoutube(widget.movie.imdbId),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return const Center(
-                                  child: Text('An error has occurred!'),
-                                );
-                              } else if (snapshot.hasData) {
-                                String link="https://youtube.com/watch?v="+snapshot.data![0].key;
-                                return IconButton(
-                                  onPressed: () {
-
-                                    print(link);
-                                    customLaunch(link);
-                                    print(fetchYoutube(widget.movie.imdbId).toString());
-                                  },
-                                  icon: const Icon(Icons.play_circle_outlined),
-                                  iconSize: 40,
-                                  color: Colors.blue,
-                                );
-                              } else {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            }),
-
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.play_circle_outlined),
+                          iconSize: 40,
+                          color: Colors.blue,
+                        )
                       ],
                     )
                   ],
@@ -187,7 +159,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
           Padding(
             padding: const EdgeInsets.only(left: 15, top: 10),
             child: Text(
-              widget.movie.overview,
+              widget.music.title,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 15,
