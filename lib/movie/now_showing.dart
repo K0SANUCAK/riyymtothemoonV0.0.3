@@ -7,7 +7,7 @@ class Movies {
   final String title;
   final String year;
   // ignore: non_constant_identifier_names
-  final double vote_average;
+  final num vote_average;
   final String overview;
 
   Movies(
@@ -37,58 +37,57 @@ class Movies {
         poster: "https://www.themoviedb.org/t/p/w533_and_h300_bestv2" +
             json["backdrop_path"],
         title:
-        json["title"].toString() == "null" ? json["name"] : json["title"],
+            json["title"].toString() == "null" ? json["name"] : json["title"],
         year: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2" +
             json["poster_path"],
         vote_average: json["vote_average"],
         overview: json["overview"]);
   }
-
 }
 
 class Youtube {
-
   final String name;
   final String key;
 
-
-  Youtube(
-      {required this.name,
-        required this.key,
-        });
+  Youtube({
+    required this.name,
+    required this.key,
+  });
 
   factory Youtube.fromJson(Map<String, dynamic> json) {
-    return Youtube(
-        name: json["name"],
-        key: json["key"]);
+    return Youtube(name: json["name"], key: json["key"]);
   }
-
-
 }
-class Search {
 
+class Search {
   final String name;
   final int key;
- // final String poster;
-
+  final String poster;
+  final String year;
+  // ignore: non_constant_identifier_names
+  final num vote_average;
+  final String overview;
 
   Search(
       {required this.name,
-        required this.key,
-        //required this.poster
-      });
+      required this.key,
+      required this.poster,
+      required this.year,
+      // ignore: non_constant_identifier_names
+      required this.vote_average,
+      required this.overview});
 
   factory Search.fromJson(Map<String, dynamic> json) {
     return Search(
         name: json["original_title"],
         key: json["id"],
-        /*poster: "https://www.themoviedb.org/t/p/w533_and_h300_bestv2" +
-            json["poster_path"]*/
-    );
-
+        poster: "https://www.themoviedb.org/t/p/w533_and_h300_bestv2" +
+            json["poster_path"],
+        year: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2" +
+            json["poster_path"],
+        vote_average: json["vote_average"],
+        overview: json["overview"]);
   }
-
-
 }
 
 Future<List<Movies>>? fetchAllMovies() async {
@@ -111,11 +110,16 @@ Future<List<Youtube>>? fetchYoutube(int id) async {
   if (response.statusCode == 200) {
     final result = jsonDecode(response.body);
     Iterable list = result["results"];
-    return list.map((youtube) => Youtube.fromJson(youtube)).toList();
+    if (list.length < 0) {
+      return list.map((youtube) => Youtube.fromJson(youtube)).toList();
+    } else {
+      throw Exception("Failed to load movies!");
+    }
   } else {
     throw Exception("Failed to load movies!");
   }
 }
+
 Future<List<Search>>? fetchSearch(String word) async {
   final response = await http.get(Uri.parse(
       "https://api.themoviedb.org/3/search/movie?api_key=f45ed86c0a3a4ffa16e3d9f8118fc6f8&language=en-US&query=$word"));

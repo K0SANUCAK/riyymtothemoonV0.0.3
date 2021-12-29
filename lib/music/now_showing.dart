@@ -20,7 +20,7 @@ class Musics {
   }
 }
 
-Future<List<Musics>>? fetchAllMovies() async {
+Future<List<Musics>>? fetchAllMusics() async {
   final response = await http.get(Uri.parse(
       "https://api.deezer.com/chart"));
 

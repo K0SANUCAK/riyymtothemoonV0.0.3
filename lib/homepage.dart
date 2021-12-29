@@ -9,7 +9,6 @@ import 'package:riyym/login_screen.dart';
 import 'package:riyym/music/buildpage1.dart';
 import 'package:riyym/music/buildpage2.dart';
 import 'package:riyym/music/buildpage3.dart';
-import 'package:riyym/music/music_general_screen.dart';
 import 'package:riyym/profile/main.dart';
 import 'package:riyym/registration_screen.dart';
 import 'bottomappbar.dart';
@@ -17,6 +16,7 @@ import 'movie/detail_movie_page.dart';
 import 'movie/film.dart';
 import 'homepagecenter.dart';
 import 'movie/now_showing.dart';
+import 'music/music_general.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -34,17 +34,11 @@ class _HomePageState extends State<HomePage> {
   static const List<Widget> _pages = <Widget>[
     Film(),
     MyBookApp(),
-    MusicGeneralScreen(
-      buildPage: buildPage1(),
-    ),
+    Music(),
     homepagecenter(),
-    MusicGeneralScreen(
-      buildPage: buildPage1(),
-    ),
-    MusicGeneralScreen(buildPage: buildPage2()),
-    MusicGeneralScreen(
-      buildPage: buildPage3(),
-    ),
+    Music(),
+    Music(),
+    Music(),
     homepagecenter(),
     MyProfile(),
     LoginScreen(),
@@ -73,15 +67,15 @@ class _HomePageState extends State<HomePage> {
                     _selectedIndex == 3 || _selectedIndex == 0
                         ? Icons.movie
                         : (_selectedIndex == 2 ||
-                        _selectedIndex == 4 ||
-                        _selectedIndex == 5 ||
-                        _selectedIndex == 6
-                        ? Icons.library_music
-                        : Icons.book),
+                                _selectedIndex == 4 ||
+                                _selectedIndex == 5 ||
+                                _selectedIndex == 6
+                            ? Icons.library_music
+                            : Icons.book),
                     color: _selectedIndex == 0 ||
-                        _selectedIndex == 1 ||
-                        _selectedIndex == 2 ||
-                        _selectedIndex == 4
+                            _selectedIndex == 1 ||
+                            _selectedIndex == 2 ||
+                            _selectedIndex == 4
                         ? Colors.amber
                         : Colors.white,
                   ),
@@ -103,11 +97,11 @@ class _HomePageState extends State<HomePage> {
                     _selectedIndex == 3
                         ? Icons.book
                         : ((_selectedIndex == 2 ||
-                        _selectedIndex == 4 ||
-                        _selectedIndex == 5 ||
-                        _selectedIndex == 6)
-                        ? Icons.turned_in
-                        : Icons.favorite),
+                                _selectedIndex == 4 ||
+                                _selectedIndex == 5 ||
+                                _selectedIndex == 6)
+                            ? Icons.turned_in
+                            : Icons.favorite),
                     color: _selectedIndex == 5 ? Colors.amber : Colors.white,
                   ),
                   onPressed: () {
@@ -133,28 +127,34 @@ class _HomePageState extends State<HomePage> {
                           iconSize: 30.0,
                           //padding: EdgeInsets.only(right: 28.0),
                           icon: Icon(
-                            _selectedIndex == 3 ? Icons.music_note : Icons.shuffle,
-                            color: _selectedIndex == 6 ? Colors.amber : Colors.white,
+                            _selectedIndex == 3
+                                ? Icons.music_note
+                                : Icons.shuffle,
+                            color: _selectedIndex == 6
+                                ? Colors.amber
+                                : Colors.white,
                           ),
                           onPressed: () {
                             setState(() {
-
                               var rng = new Random();
-                              int i=rng.nextInt(20);
+                              int i = rng.nextInt(20);
 
-                              if(_selectedIndex==0){Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailMoviePage(snapshot.data![i]
+                              if (_selectedIndex == 0) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetailMoviePage(snapshot.data![i]),
                                   ),
-                                ),
-                              );}
+                                );
+                              }
                               if (_selectedIndex == 2 ||
                                   _selectedIndex == 4 ||
                                   _selectedIndex == 5 ||
                                   _selectedIndex == 6) {
                                 _selectedIndex = 6;
-                              } else if (_selectedIndex == 3) _selectedIndex = 2;
+                              } else if (_selectedIndex == 3)
+                                _selectedIndex = 2;
                             });
                           },
                         );
@@ -204,11 +204,7 @@ class _HomePageState extends State<HomePage> {
           gradient: blueGradient,
           onTap: () {
             setState(() {
-              if (_selectedIndex == 0) {
-                _selectedIndex = 4;
-                FullScreenMenu.hide();
-              } else
-                _selectedIndex = 0;
+              _selectedIndex = 0;
               FullScreenMenu.hide();
             });
           },
@@ -219,10 +215,8 @@ class _HomePageState extends State<HomePage> {
           gradient: redGradient,
           onTap: () {
             setState(() {
-              if (_selectedIndex == 1) {
-                FullScreenMenu.hide();
-              } else
-                _selectedIndex = 1;FullScreenMenu.hide();
+              _selectedIndex = 1;
+              FullScreenMenu.hide();
             });
           },
         ),
@@ -255,8 +249,8 @@ class _HomePageState extends State<HomePage> {
             FullScreenMenu.hide();
             var logOut = await Authentication().logOut();
             if (logOut == 'true') {
-              Navigator.pushAndRemoveUntil(
-                  context, MaterialPageRoute(builder: (context) {
+              Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (context) {
                 return LoginScreen();
               }), (route) => false);
             } else {
@@ -286,9 +280,7 @@ class BtappBar extends StatelessWidget {
     return FABBottomAppBar(
       color: Colors.grey,
       // ignore: deprecated_member_use
-      selectedColor: Theme
-          .of(context)
-          .accentColor,
+      selectedColor: Theme.of(context).accentColor,
       notchedShape: const CircularNotchedRectangle(),
       onTabSelected: (index) {},
       items: [

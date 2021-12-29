@@ -16,13 +16,14 @@ class DetailMoviePage extends StatefulWidget {
 }
 
 class _DetailMoviePageState extends State<DetailMoviePage> {
+  void customLaunch(command) async {
+    print(
+      command,
+    );
 
-  void customLaunch(command) async{
-    print(command, );
-
-      await launch(command,forceSafariVC: false);
-
+    await launch(command, forceSafariVC: false);
   }
+
   /* _launchURL(String url) async {
   if (Platform.isIOS) {
     if (await canLaunch('https://www.youtube.com/watch?v=$url')) {
@@ -110,14 +111,14 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                       ),
                     ),
                     SizedBox(height: 5),
-                    /*Text(
-                      "${widget.movie.year}, ${widget.movie.title}, ${widget.movie.title} Min.",
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),*/
+                    // Text(
+                    //   "${widget.movie.year}, ${widget.movie.title}, ${widget.movie.title} Min.",
+                    //   style: TextStyle(
+                    //     color: Colors.white.withOpacity(0.7),
+                    //     fontSize: 14,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
                     SizedBox(height: 5),
                     Row(
                       children: [
@@ -143,17 +144,24 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                             future: fetchYoutube(widget.movie.imdbId),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
-                                return const Center(
-                                  child: Text('An error has occurred!'),
-                                );
-                              } else if (snapshot.hasData) {
-                                String link="https://youtube.com/watch?v="+snapshot.data![0].key;
                                 return IconButton(
                                   onPressed: () {
-
+                                    customLaunch(
+                                        "https://www.youtube.com/results?search_query=${widget.movie.title} trailer");
+                                  },
+                                  icon: const Icon(Icons.play_circle_outlined),
+                                  iconSize: 40,
+                                  color: Colors.blue,
+                                );
+                              } else if (snapshot.hasData) {
+                                String link = "https://youtube.com/watch?v=" +
+                                    snapshot.data![0].key;
+                                return IconButton(
+                                  onPressed: () {
                                     print(link);
                                     customLaunch(link);
-                                    print(fetchYoutube(widget.movie.imdbId).toString());
+                                    print(fetchYoutube(widget.movie.imdbId)
+                                        .toString());
                                   },
                                   icon: const Icon(Icons.play_circle_outlined),
                                   iconSize: 40,
@@ -165,7 +173,6 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                                 );
                               }
                             }),
-
                       ],
                     )
                   ],
@@ -185,7 +192,7 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 15, top: 10),
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
             child: Text(
               widget.movie.overview,
               style: const TextStyle(

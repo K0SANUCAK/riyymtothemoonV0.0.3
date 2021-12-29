@@ -98,7 +98,7 @@ class _MusicState extends State<Music> {
           ),
           backgroundColor: Colors.black,
           body: FutureBuilder<List<Musics>>(
-              future: fetchAllMovies(),
+              future: fetchAllMusics(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
