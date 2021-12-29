@@ -1,22 +1,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:full_screen_menu/full_screen_menu.dart';
-import 'package:riyym/book/main.dart';
+import 'package:riyym/book/book_home.dart';
 import 'package:riyym/dataBase/authentication.dart';
 import 'package:riyym/login_screen.dart';
-import 'package:riyym/music/buildpage1.dart';
-import 'package:riyym/music/buildpage2.dart';
-import 'package:riyym/music/buildpage3.dart';
-import 'package:riyym/profile/main.dart';
+import 'package:riyym/profile/profile_home.dart';
 import 'package:riyym/registration_screen.dart';
 import 'bottomappbar.dart';
 import 'movie/detail_movie_page.dart';
-import 'movie/film.dart';
+import 'movie/movie_home.dart';
 import 'homepagecenter.dart';
-import 'movie/now_showing.dart';
-import 'music/music_general.dart';
+import 'movie/movie_api.dart';
+import 'music/music_home.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -35,11 +31,11 @@ class _HomePageState extends State<HomePage> {
     Film(),
     MyBookApp(),
     Music(),
-    homepagecenter(),
+    HomePageCenter(),
     Music(),
     Music(),
     Music(),
-    homepagecenter(),
+    HomePageCenter(),
     MyProfile(),
     LoginScreen(),
     RegistrationScreen(),
@@ -53,8 +49,8 @@ class _HomePageState extends State<HomePage> {
         body: _pages.elementAt(_selectedIndex),
         bottomNavigationBar: BottomAppBar(
           color: Colors.transparent.withOpacity(0.3),
-          shape: CircularNotchedRectangle(),
-          child: Container(
+          shape: const CircularNotchedRectangle(),
+          child: SizedBox(
             height: 75,
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -86,7 +82,9 @@ class _HomePageState extends State<HomePage> {
                           _selectedIndex == 5 ||
                           _selectedIndex == 6) {
                         _selectedIndex = 4;
-                      } else if (_selectedIndex == 3) _selectedIndex = 0;
+                      } else if (_selectedIndex == 3) {
+                        _selectedIndex = 0;
+                      }
                     });
                   },
                 ),
@@ -111,7 +109,9 @@ class _HomePageState extends State<HomePage> {
                           _selectedIndex == 5 ||
                           _selectedIndex == 6) {
                         _selectedIndex = 5;
-                      } else if (_selectedIndex == 3) _selectedIndex = 1;
+                      } else if (_selectedIndex == 3) {
+                        _selectedIndex = 1;
+                      }
                     });
                   },
                 ),
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              var rng = new Random();
+                              var rng = Random();
                               int i = rng.nextInt(20);
 
                               if (_selectedIndex == 0) {
@@ -153,8 +153,9 @@ class _HomePageState extends State<HomePage> {
                                   _selectedIndex == 5 ||
                                   _selectedIndex == 6) {
                                 _selectedIndex = 6;
-                              } else if (_selectedIndex == 3)
+                              } else if (_selectedIndex == 3) {
                                 _selectedIndex = 2;
+                              }
                             });
                           },
                         );
@@ -243,15 +244,15 @@ class _HomePageState extends State<HomePage> {
           },
         ),
         FSMenuItem(
-          icon: Icon(Icons.logout, color: Colors.white),
-          text: Text('LogOut', style: TextStyle(color: Colors.white)),
+          icon: const Icon(Icons.logout, color: Colors.white),
+          text: const Text('LogOut', style: TextStyle(color: Colors.white)),
           onTap: () async {
             FullScreenMenu.hide();
             var logOut = await Authentication().logOut();
             if (logOut == 'true') {
               Navigator.pushAndRemoveUntil(context,
                   MaterialPageRoute(builder: (context) {
-                return LoginScreen();
+                return const LoginScreen();
               }), (route) => false);
             } else {
               showDialog(

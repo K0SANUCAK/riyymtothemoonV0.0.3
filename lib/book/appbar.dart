@@ -14,7 +14,7 @@ class _AppbarState extends State<Appbar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0x0D0C3EFF),
+      backgroundColor: const Color(0x0D0C3EFF),
       title: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: Container(
@@ -25,22 +25,22 @@ class _AppbarState extends State<Appbar> {
             autofocus: false,
             decoration: InputDecoration(
               suffixIcon: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.search,
                   color: Colors.white38,
                 ),
                 onPressed: () {},
               ),
               labelText: 'Search',
-              labelStyle: TextStyle(color: Colors.white38),
-              border: OutlineInputBorder(
+              labelStyle: const TextStyle(color: Colors.white38),
+              border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
               ),
             ),
           ),
         ),
       ),
-      leading: Icon(Icons.menu),
+      leading: const Icon(Icons.menu),
       actions: [
         IconButton(
           onPressed: () {},
@@ -52,7 +52,7 @@ class _AppbarState extends State<Appbar> {
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0x0D0C3EFF), Colors.brown.shade700],
+            colors: [const Color(0x0D0C3EFF), Colors.brown.shade700],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

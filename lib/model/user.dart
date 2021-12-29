@@ -1,4 +1,4 @@
-import 'package:riyym/movie/now_showing.dart';
+import 'package:riyym/movie/movie_api.dart';
 
 class Users {
   final String? name;

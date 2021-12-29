@@ -13,8 +13,6 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _formKey = GlobalKey<FormState>();
-
   //controller editings
   final firstNameEditingController = TextEditingController();
   final secondNameEditingController = TextEditingController();
@@ -33,7 +31,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.person),
+        prefixIcon: const Icon(Icons.person),
         hintText: 'Name',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -49,7 +47,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.person),
+        prefixIcon: const Icon(Icons.person),
         hintText: 'Surname',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -65,7 +63,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.email),
+        prefixIcon: const Icon(Icons.email),
         hintText: 'Email',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -82,7 +80,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.vpn_key),
+        prefixIcon: const Icon(Icons.vpn_key),
         hintText: 'Password',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -99,7 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.vpn_key),
+        prefixIcon: const Icon(Icons.vpn_key),
         hintText: 'Confirm your password',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -121,13 +119,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           size: 40,
                         ))),
                 const CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage('images/smedia2.png'),
+                  backgroundImage: AssetImage('images/RIYYMmusic.png'),
                 ),
                 SizedBox(
                   width: double.infinity,
@@ -138,31 +136,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    // color: Colors.white,
                   ),
-                  // color: Colors.white,
-                  margin: EdgeInsets.all(20),
+                  margin: const EdgeInsets.all(20),
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       firstNameField,
-                      Divider(
+                      const Divider(
                         thickness: 1,
                       ),
                       // SizedBox(
                       //   height: 18,
                       // ),
                       secondNameField,
-                      Divider(
+                      const Divider(
                         thickness: 1,
                       ),
                       emailField,
-                      Divider(
+                      const Divider(
                         thickness: 1,
                       ),
                       passwordField,
-                      Divider(
+                      const Divider(
                         thickness: 1,
                       ),
                       confirmPasswordField,
@@ -170,7 +166,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Icon(Icons.login),
+                          const Icon(Icons.login),
                           TextButton(
                             child: const Text(
                               'SignUp',
@@ -188,11 +184,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 String signUpping = await Authentication()
                                     .signUp(emailEditingController.text,
                                         passwordEditingController.text);
-                                print(signUpping);
                                 if (signUpping == 'true') {
-                                  Users user = Users(name: firstNameEditingController.text, surName: secondNameEditingController.text, email: emailEditingController.text);
+                                  Users user = Users(
+                                      name: firstNameEditingController.text,
+                                      surName: secondNameEditingController.text,
+                                      email: emailEditingController.text);
                                   FireStore().addUser(user: user);
-                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                                  Navigator.pushAndRemoveUntil(context,
+                                      MaterialPageRoute(
                                     builder: (context) {
                                       return HomePage();
                                     },
@@ -211,62 +210,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 showDialog(
                                   context: context,
                                   builder: (context) {
-                                    return AlertDialog(
+                                    return const AlertDialog(
                                       content: Text(
                                           'The confirm password does not match\n\n  Make sure passwords are the same'),
                                     );
                                   },
                                 );
                               }
-                              // Navigator.pop(context);
                             },
                           ),
                         ],
                       ),
-                      /* TextButton(
-                        child: const Text(
-                          'Temporary Music Page',
-                          style: TextStyle(
-                            fontFamily: 'Pacifico',
-                            fontSize: 20,
-                            color: Colors.pink,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        style: TextButton.styleFrom(primary: Colors.purple),
-                        onPressed: () {
-                          /*Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return MusicGeneralScreen();
-                              },
-                            ),
-                          );*/
-                        },
-                      ),*/
-
-                      // RichText(
-                      //   text: const TextSpan(
-                      //     text: 'Don\'t have an account?',
-                      //     style: TextStyle(
-                      //       fontSize: 15,
-                      //
-                      //       color: Colors.black,
-                      //     ),
-                      //     children: <TextSpan>[
-                      //       TextSpan(
-                      //         text: 'SignUp',
-                      //         style: TextStyle(
-                      //           fontFamily: 'Pacifico',
-                      //           fontWeight: FontWeight.bold,
-                      //           fontSize: 15,
-                      //           color: Colors.black,
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

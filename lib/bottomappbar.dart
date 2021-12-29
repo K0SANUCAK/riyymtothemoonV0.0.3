@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:riyym/homepage.dart';
 
 class FABBottomAppBarItem {
   FABBottomAppBarItem(
@@ -40,8 +39,6 @@ class FABBottomAppBar extends StatefulWidget {
 
 class FABBottomAppBarState extends State<FABBottomAppBar> {
   int _selectedIndex = 0;
-
-  int get _selectedIndexx => _selectedIndex;
 
   _updateIndex(int index) {
     widget.onTabSelected(index);

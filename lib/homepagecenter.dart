@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:riyym/music/buildpage1.dart';
 
-class homepagecenter extends StatefulWidget {
-  const homepagecenter({Key? key}) : super(key: key);
+class HomePageCenter extends StatefulWidget {
+  const HomePageCenter({Key? key}) : super(key: key);
 
   @override
-  State<homepagecenter> createState() => _homepagecenterState();
+  State<HomePageCenter> createState() => _HomePageCenterState();
 }
 
-class _homepagecenterState extends State<homepagecenter> {
+class _HomePageCenterState extends State<HomePageCenter> {
   int check = 1;
   double sz1 = 40;
   double sz2 = 40;
@@ -44,8 +43,8 @@ class _homepagecenterState extends State<homepagecenter> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
-                      children: [
-                        const Expanded(
+                      children: const [
+                        Expanded(
                           child: Padding(
                             padding: EdgeInsets.all(24.0),
                             child: Text(
@@ -58,17 +57,6 @@ class _homepagecenterState extends State<homepagecenter> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.menu,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                            onPressed: () {},
-                          ),
-                        )
                       ],
                     ),
                   ],
@@ -185,18 +173,6 @@ class _homepagecenterState extends State<homepagecenter> {
                         ),
                       ],
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        check == 1
-                            ? const musicListView()
-                            : (check == 2
-                                ? const musicListView()
-                                : const musicListView())
-                      ],
-                    )
                   ],
                 )
               ],

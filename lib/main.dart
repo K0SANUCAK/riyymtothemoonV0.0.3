@@ -4,7 +4,63 @@ import 'login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const MaterialApp(
+    home: Splash(),
+    debugShowCheckedModeBanner: false,
+  ));
+}
+
+class Splash extends StatefulWidget {
+  const Splash({Key? key}) : super(key: key);
+
+  @override
+  _SplashState createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage("images/loading.png"))),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: ShaderMask(
+                blendMode: BlendMode.srcIn,
+                shaderCallback: (Rect bounds) {
+                  return const LinearGradient(
+                    colors: [Colors.red, Colors.blue],
+                    tileMode: TileMode.mirror,
+                  ).createShader(bounds);
+                },
+                child: const Text(
+                  'RIYYM',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 50,
+                  ),
+                ),
+              ),
+            ),
+            const CircularProgressIndicator(
+              color: Colors.purple,
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -13,15 +69,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: FutureBuilder(future: _ryapp, builder: (context, snapshot){
-        if(snapshot.hasData){
+    return FutureBuilder(
+      future: _ryapp,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
           return const LoginScreen();
-        }else{
-          return const Center(child: CircularProgressIndicator(),);
+        } else {
+          return const Scaffold(
+              body: Center(
+            child: CircularProgressIndicator(),
+          ));
         }
-      },),
+      },
     );
   }
 }

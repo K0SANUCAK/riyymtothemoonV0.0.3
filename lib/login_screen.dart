@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: <Widget>[
                 const CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage('images/smedia2.png'),
+                  backgroundImage: AssetImage('images/RIYYMmusic.png'),
                 ),
                 SizedBox(
                   width: double.infinity,
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  margin: EdgeInsets.all(20),
+                  margin: const EdgeInsets.all(20),
                   padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      Divider(
+                      const Divider(
                         thickness: 1,
                       ),
                       TextField(
@@ -86,13 +86,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Icon(Icons.login),
+                          const Icon(Icons.login),
                           TextButton(
                             child: const Text(
                               'login',
@@ -105,9 +105,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             style: TextButton.styleFrom(primary: Colors.purple),
                             onPressed: () async {
-                              var signing = await Authentication().logIn(myController.text, myControllerPw.text);
-                              print(signing);
-                              if(signing == 'true'){
+                              var signing = await Authentication().logIn(
+                                  myController.text, myControllerPw.text);
+                              if (signing == 'true') {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
@@ -115,9 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       return HomePage();
                                     },
                                   ),
-                                    (route) => false,
+                                  (route) => false,
                                 );
-                              }  else {
+                              } else {
                                 showDialog(
                                   context: context,
                                   builder: (context) {
@@ -153,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Row(
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return RegistrationScreen();
+                                    return const RegistrationScreen();
                                   },
                                 ),
                               );
@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Row(
@@ -198,10 +198,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       ElevatedButton(
-                        style: ButtonStyle(alignment: Alignment.center),
+                        style: const ButtonStyle(alignment: Alignment.center),
                         child: Center(
                           child: Row(
-                            children: <Widget>[
+                            children: const <Widget>[
                               Icon(Icons.mail),
                               Text('Google'),
                             ],
@@ -210,10 +210,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {},
                       ),
                       ElevatedButton(
-                        style: ButtonStyle(alignment: Alignment.center),
+                        style: const ButtonStyle(alignment: Alignment.center),
                         child: Center(
                           child: Row(
-                            children: <Widget>[
+                            children: const <Widget>[
                               Icon(Icons.phone_iphone),
                               Text('Apple'),
                             ],
