@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:riyym/movie/search_screen.dart';
+import 'package:riyym/music/search_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'detail_music_page.dart';
 
@@ -15,6 +15,8 @@ class Music extends StatefulWidget {
 }
 
 class _MusicState extends State<Music> {
+  TextEditingController controller = TextEditingController();
+
   int currentIndex = 0;
   int activeIndex = 0;
 
@@ -50,6 +52,14 @@ class _MusicState extends State<Music> {
                     color: Color.fromARGB(51, 58, 76, 255),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: TextField(
+                  onEditingComplete: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SearchPage(controller.text)),
+                    );
+                  },
+                  controller: controller,
                   autofocus: false,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
@@ -61,7 +71,8 @@ class _MusicState extends State<Music> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const MyApp()),
+                              builder: (context) =>
+                                  SearchPage(controller.text)),
                         );
                       },
                     ),
@@ -74,15 +85,15 @@ class _MusicState extends State<Music> {
                 ),
               ),
             ),
-            leading: const Icon(Icons.menu),
-            actions: [
+
+            /*actions: [
               IconButton(
                 onPressed: () {},
                 icon: const Icon(
                   Icons.notifications,
                 ),
               ),
-            ],
+            ],*/
             flexibleSpace: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -150,7 +161,7 @@ class _MusicState extends State<Music> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DetailMoviePage(
+                              builder: (context) => DetailMusicPage(
                                 list[index],
                               ),
                             ),
@@ -173,17 +184,29 @@ class _MusicState extends State<Music> {
                               Center(
                                 child: Container(
                                     alignment: Alignment.center,
-                                    width: double.infinity,
+                                    width: 220,
                                     height: 50,
-                                    color: Colors.black.withOpacity(0.6),
+                                    color: Colors.black.withOpacity(0.75),
                                     child: Center(
-                                        child: Text(
-                                      list[index].title,
-                                      style: const TextStyle(
-                                        fontSize: 22,
-                                        color: Colors.white,
-                                      ),
-                                      textAlign: TextAlign.center,
+                                        child: Column(
+                                      children: [
+                                        Text(
+                                          list[index].title,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 22,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          list[index].singer,
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontStyle: FontStyle.italic),
+                                        )
+                                      ],
                                     ))),
                               )
                             ],
@@ -192,11 +215,23 @@ class _MusicState extends State<Music> {
                       );
                     },
                   ),
-                  buildIndicator(list),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: buildIndicator(list),
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 10.0),
+            const Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "Trending Musics",
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
             movieListView(
               list: list,
             ),
@@ -238,7 +273,7 @@ class movieListView extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailMoviePage(
+                  builder: (context) => DetailMusicPage(
                     list[index],
                   ),
                 ),

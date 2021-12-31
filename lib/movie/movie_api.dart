@@ -5,7 +5,7 @@ class Movies {
   final int imdbId;
   final String poster;
   final String title;
-  final String year;
+  final String verticalImg;
   // ignore: non_constant_identifier_names
   final num vote_average;
   final String overview;
@@ -14,7 +14,7 @@ class Movies {
       {required this.imdbId,
       required this.title,
       required this.poster,
-      required this.year,
+      required this.verticalImg,
       // ignore: non_constant_identifier_names
       required this.vote_average,
       required this.overview});
@@ -26,7 +26,7 @@ class Movies {
             json["backdrop_path"],
         title:
             json["title"].toString() == "null" ? json["name"] : json["title"],
-        year: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2" +
+        verticalImg: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2" +
             json["poster_path"],
         vote_average: json["vote_average"],
         overview: json["overview"]);
@@ -38,10 +38,43 @@ class Movies {
             json["backdrop_path"],
         title:
             json["title"].toString() == "null" ? json["name"] : json["title"],
-        year: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2" +
+        verticalImg: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2" +
             json["poster_path"],
         vote_average: json["vote_average"],
         overview: json["overview"]);
+  }
+}
+
+class FavoriteMovie {
+  final int imdbId;
+  final String poster;
+  final String title;
+  final String year;
+  // ignore: non_constant_identifier_names
+  final num vote_average;
+  final String overview;
+
+  FavoriteMovie(
+      {required this.imdbId,
+      required this.title,
+      required this.poster,
+      required this.year,
+      // ignore: non_constant_identifier_names
+      required this.vote_average,
+      required this.overview});
+
+  factory FavoriteMovie.fromJson(Map<String, dynamic> json) {
+    return FavoriteMovie(
+        imdbId: json["id"],
+        poster: "https://www.themoviedb.org/t/p/w533_and_h300_bestv2" +
+            json["backdrop_path"].toString(),
+        title: json["title"].toString() == "null"
+            ? json["name"].toString()
+            : json["title"].toString(),
+        year: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2" +
+            json["poster_path"].toString(),
+        vote_average: json["vote_average"],
+        overview: json["overview"].toString());
   }
 }
 
@@ -98,6 +131,20 @@ Future<List<Movies>>? fetchAllMovies() async {
     final result = jsonDecode(response.body);
     Iterable list = result["results"];
     return list.map((movie) => Movies.fromJson(movie)).toList();
+  } else {
+    throw Exception("Failed to load movies!");
+  }
+}
+
+Future<List<FavoriteMovie>>? fetchFavorite() async {
+  final response = await http
+      .get(Uri.parse("https://my-json-server.typicode.com/K0SANUCAK/json/db"));
+  if (response.statusCode == 200) {
+    final result = jsonDecode(response.body);
+    Iterable list = result["results"];
+    return list
+        .map((favoritemovie) => FavoriteMovie.fromJson(favoritemovie))
+        .toList();
   } else {
     throw Exception("Failed to load movies!");
   }

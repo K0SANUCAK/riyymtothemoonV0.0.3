@@ -28,7 +28,14 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
+      body: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus &&
+              currentFocus.focusedChild != null) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          }
+        },
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -56,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextField(
                         controller: myController,
                         autofocus: false,
+                        textInputAction: TextInputAction.next,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.mail,
@@ -72,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextField(
                         controller: myControllerPw,
+                        textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.number,
                         obscureText: true,
                         autofocus: false,
@@ -185,50 +194,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(
                         height: 10,
-                      ),
-                      Row(
-                        children: const <Widget>[
-                          Expanded(
-                            child: Divider(thickness: 1.5, endIndent: 15),
-                          ),
-                          Text('OR'),
-                          Expanded(
-                            child: Divider(thickness: 1.5, indent: 15),
-                          ),
-                        ],
-                      ),
-                      ElevatedButton(
-                        style: const ButtonStyle(alignment: Alignment.center),
-                        child: Center(
-                          child: Row(
-                            children: const <Widget>[
-                              Icon(Icons.mail),
-                              Text('Google'),
-                            ],
-                          ),
-                        ),
-                        onPressed: () {},
-                      ),
-                      ElevatedButton(
-                        style: const ButtonStyle(alignment: Alignment.center),
-                        child: Center(
-                          child: Row(
-                            children: const <Widget>[
-                              Icon(Icons.phone_iphone),
-                              Text('Apple'),
-                            ],
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return HomePage();
-                              },
-                            ),
-                          );
-                        },
                       ),
                     ],
                   ),

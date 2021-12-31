@@ -351,7 +351,7 @@ class movieListView extends StatelessWidget {
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: NetworkImage(
-                        list[index].year,
+                        list[index].verticalImg,
                       ),
                     ),
                   ),

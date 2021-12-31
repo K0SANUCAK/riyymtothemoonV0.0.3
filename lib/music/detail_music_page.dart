@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'music_api.dart';
 
-class DetailMoviePage extends StatefulWidget {
+class DetailMusicPage extends StatefulWidget {
   final Musics music;
 
   // ignore: use_key_in_widget_constructors
-  const DetailMoviePage(this.music);
+  const DetailMusicPage(this.music);
   @override
-  _DetailMoviePageState createState() => _DetailMoviePageState();
+  _DetailMusicPageState createState() => _DetailMusicPageState();
 }
 
-class _DetailMoviePageState extends State<DetailMoviePage> {
+class _DetailMusicPageState extends State<DetailMusicPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,54 +72,69 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        Text(
-                          widget.music.imdbId.toString(),
-                          style: const TextStyle(
-                            color: Colors.yellow,
-                            fontSize: 17,
+                        Column(children: <Widget>[
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundImage:
+                                NetworkImage(widget.music.singerUrl),
                           ),
-                        ),
-                        const SizedBox(width: 5),
-                        ...List.generate(
-                          5,
-                          (index) => Icon(
-                            Icons.star,
-                            color: (index < (widget.music.imdbId / 2).floor())
-                                ? Colors.yellow
-                                : Colors.white30,
+                          const SizedBox(
+                            height: 7,
                           ),
+                          Text(
+                            widget.music.singer,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 18),
+                          )
+                        ]),
+                        const Expanded(child: Text("")),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.people,
+                                  size: 40,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "${widget.music.rank}",
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.access_time,
+                                  size: 40,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "${(Duration(seconds: widget.music.duration).inMinutes + (((widget.music.duration) - Duration(seconds: widget.music.duration).inMinutes * 60) * 0.01)).toStringAsFixed(2)}",
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.play_circle_outlined),
-                          iconSize: 40,
-                          color: Colors.blue,
-                        )
+                            onPressed: () async {
+                              await launch(
+                                  "https://www.youtube.com/results?search_query=${widget.music.singer} ${widget.music.title}",
+                                  forceSafariVC: false);
+                            },
+                            icon: const Icon(
+                              Icons.play_circle_outline_sharp,
+                              size: 30,
+                              color: Colors.blue,
+                            )),
                       ],
                     )
                   ],
                 ),
-              ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 15),
-            child: Text(
-              "Overview",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15, top: 10),
-            child: Text(
-              widget.music.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 15,
               ),
             ),
           ),

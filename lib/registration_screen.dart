@@ -95,7 +95,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       onSaved: (value) {
         confirmPasswordEditingController.text = value!;
       },
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.vpn_key),
         hintText: 'Confirm your password',
@@ -106,8 +106,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
+      body: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus &&
+              currentFocus.focusedChild != null) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          }
+        },
         child: Center(
           child: SingleChildScrollView(
             child: Column(

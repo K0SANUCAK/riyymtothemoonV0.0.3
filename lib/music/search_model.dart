@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'detail_movie_page.dart';
-import 'movie_api.dart';
+import 'detail_music_page.dart';
+import 'music_api.dart';
 
 // ignore: must_be_immutable
 class SearchPage extends StatelessWidget {
@@ -17,13 +17,11 @@ class SearchPage extends StatelessWidget {
         centerTitle: true,
         title: Text("Search results for '$word'"),
       ),
-      body: FutureBuilder<List<Search>>(
-          future: fetchSearch(word),
+      body: FutureBuilder<List<MusicSearch>>(
+          future: fetchMusicSearch(word),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return const Center(
-                child: Text('An error has occurred!'),
-              );
+              return const Center(child: Text("error"));
             } else if (snapshot.hasData) {
               return searchList(snapshot.data!);
             } else {
@@ -35,7 +33,7 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Widget searchList(List<Search> list) {
+  Widget searchList(List<MusicSearch> list) {
     return ListView.builder(
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
@@ -51,20 +49,19 @@ class SearchPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailMoviePage(
+                        builder: (context) => DetailMusicPage(
                           convert(list[index]),
                         ),
                       ),
                     );
                   },
-                  leading: Image.network(list[index].poster !=
-                          "https://www.themoviedb.org/t/p/w533_and_h300_bestv2null"
-                      ? list[index].poster
-                      : "https://www.incimages.com/uploaded_files/image/1024x576/getty_525041723_970647970450098_70024.jpg"),
+                  leading: Image.network(
+                    list[index].poster,
+                  ),
                   trailing: TextButton(
                     onPressed: () async {
                       await launch(
-                          "https://www.youtube.com/results?search_query=${list[index].name} trailer",
+                          "https://www.youtube.com/results?search_query=${list[index].singer} ${list[index].title}",
                           forceSafariVC: false);
                     },
                     child: const Icon(
@@ -73,7 +70,7 @@ class SearchPage extends StatelessWidget {
                       color: Colors.pinkAccent,
                     ),
                   ),
-                  title: Text(list[index].name,
+                  title: Text(list[index].title,
                       style: const TextStyle(fontSize: 18)),
                 ),
               ),
@@ -82,37 +79,21 @@ class SearchPage extends StatelessWidget {
                 color: Colors.pink,
                 height: 1,
               )
-
-              /*trailing: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailMoviePage(
-                              convert(list[index]),
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Kıps",
-                        style: TextStyle(color: Colors.green, fontSize: 15),
-                      ),
-                    ),*/
-              // title: Text(list[index].name)),
             ],
           );
         });
   }
 
-  Movies convert(Search s) {
-    Movies m = Movies(
-        imdbId: s.key,
-        title: s.name,
+  Musics convert(MusicSearch s) {
+    Musics m = Musics(
+        id: s.id,
+        title: s.title,
         poster: s.poster,
-        verticalImg: s.year,
-        vote_average: s.vote_average,
-        overview: s.overview);
+        singer: s.singer,
+        link: s.link,
+        singerUrl: s.singerUrl,
+        duration: s.duration,
+        rank: s.rank);
     return m;
   }
 }
