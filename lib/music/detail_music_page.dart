@@ -112,7 +112,17 @@ class _DetailMusicPageState extends State<DetailMusicPage> {
                                   color: Colors.white,
                                 ),
                                 Text(
-                                  "${(Duration(seconds: widget.music.duration).inMinutes + (((widget.music.duration) - Duration(seconds: widget.music.duration).inMinutes * 60) * 0.01)).toStringAsFixed(2)}",
+                                  (Duration(seconds: widget.music.duration)
+                                              .inMinutes +
+                                          (((widget.music.duration) -
+                                                  Duration(
+                                                              seconds: widget
+                                                                  .music
+                                                                  .duration)
+                                                          .inMinutes *
+                                                      60) *
+                                              0.01))
+                                      .toStringAsFixed(2),
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
