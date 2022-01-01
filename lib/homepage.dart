@@ -3,16 +3,22 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:full_screen_menu/full_screen_menu.dart';
 import 'package:riyym/book/book_home.dart';
+import 'package:riyym/book/detail_book_page.dart';
 import 'package:riyym/dataBase/authentication.dart';
 import 'package:riyym/login_screen.dart';
+import 'package:riyym/music/detail_music_page.dart';
+import 'package:riyym/not_working.dart';
 import 'package:riyym/profile/profile_home.dart';
 import 'package:riyym/registration_screen.dart';
+import 'book/book_api.dart';
 import 'bottomappbar.dart';
 import 'movie/detail_movie_page.dart';
 import 'movie/movie_home.dart';
 import 'homepagecenter.dart';
 import 'movie/movie_api.dart';
+import 'music/music_api.dart';
 import 'music/music_home.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -25,6 +31,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    return true;
+  }
+
   IconData ic1 = Icons.home;
   int _selectedIndex = 3;
   static const List<Widget> _pages = <Widget>[
@@ -60,21 +82,24 @@ class _HomePageState extends State<HomePage> {
                   iconSize: 30.0,
                   //padding: EdgeInsets.only(right: 28.0),
                   icon: Icon(
-                    _selectedIndex == 3 || _selectedIndex == 0
-                        ? Icons.movie
-                        : (_selectedIndex == 2 ||
-                                _selectedIndex == 4 ||
-                                _selectedIndex == 5 ||
-                                _selectedIndex == 6
-                            ? Icons.library_music
-                            : Icons.book),
-                    color: _selectedIndex == 0 ||
-                            _selectedIndex == 1 ||
-                            _selectedIndex == 2 ||
-                            _selectedIndex == 4
-                        ? Colors.amber
-                        : Colors.white,
-                  ),
+                      _selectedIndex == 3 ||
+                              _selectedIndex == 0 ||
+                              _selectedIndex == 8
+                          ? Icons.movie
+                          : (_selectedIndex == 2 ||
+                                  _selectedIndex == 4 ||
+                                  _selectedIndex == 5 ||
+                                  _selectedIndex == 6
+                              ? Icons.library_music
+                              : Icons.book),
+                      color: _selectedIndex == 0 ||
+                              _selectedIndex == 1 ||
+                              _selectedIndex == 2 ||
+                              _selectedIndex == 4
+                          ? Colors.amber
+                          : (_selectedIndex == 8
+                              ? Colors.transparent
+                              : Colors.white)),
                   onPressed: () {
                     setState(() {
                       if (_selectedIndex == 2 ||
@@ -92,18 +117,27 @@ class _HomePageState extends State<HomePage> {
                   iconSize: 30.0,
                   // padding: EdgeInsets.only(left: 28.0),
                   icon: Icon(
-                    _selectedIndex == 3
-                        ? Icons.book
-                        : ((_selectedIndex == 2 ||
-                                _selectedIndex == 4 ||
-                                _selectedIndex == 5 ||
-                                _selectedIndex == 6)
-                            ? Icons.turned_in
-                            : Icons.favorite),
-                    color: _selectedIndex == 5 ? Colors.amber : Colors.white,
-                  ),
+                      _selectedIndex == 3 || _selectedIndex == 8
+                          ? Icons.book
+                          : ((_selectedIndex == 2 ||
+                                  _selectedIndex == 4 ||
+                                  _selectedIndex == 5 ||
+                                  _selectedIndex == 6)
+                              ? Icons.turned_in
+                              : Icons.favorite),
+                      color: _selectedIndex == 5
+                          ? Colors.amber
+                          : (_selectedIndex == 8
+                              ? Colors.transparent
+                              : Colors.white)),
                   onPressed: () {
                     setState(() {
+                      if (_selectedIndex != 3 && _selectedIndex != 8) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NotWorking()));
+                      }
                       if (_selectedIndex == 2 ||
                           _selectedIndex == 4 ||
                           _selectedIndex == 5 ||
@@ -115,56 +149,14 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 ),
-                FutureBuilder<List<Movies>>(
-                    future: fetchAllMovies(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                          child: Text('An error has occurred!'),
-                        );
-                      } else if (snapshot.hasData) {
-                        return IconButton(
-                          iconSize: 30.0,
-                          //padding: EdgeInsets.only(right: 28.0),
-                          icon: Icon(
-                            _selectedIndex == 3
-                                ? Icons.music_note
-                                : Icons.shuffle,
-                            color: _selectedIndex == 6
-                                ? Colors.amber
-                                : Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              var rng = Random();
-                              int i = rng.nextInt(20);
-
-                              if (_selectedIndex == 0) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        DetailMoviePage(snapshot.data![i]),
-                                  ),
-                                );
-                              }
-                              if (_selectedIndex == 2 ||
-                                  _selectedIndex == 4 ||
-                                  _selectedIndex == 5 ||
-                                  _selectedIndex == 6) {
-                                _selectedIndex = 6;
-                              } else if (_selectedIndex == 3) {
-                                _selectedIndex = 2;
-                              }
-                            });
-                          },
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }),
+                _selectedIndex == 0
+                    ? future()
+                    : ((_selectedIndex == 2 ||
+                            _selectedIndex == 4 ||
+                            _selectedIndex == 5 ||
+                            _selectedIndex == 6)
+                        ? future2()
+                        : future3()),
                 IconButton(
                   iconSize: 30.0,
                   //padding: EdgeInsets.only(left: 28.0),
@@ -192,6 +184,164 @@ class _HomePageState extends State<HomePage> {
             color: Colors.black,
           ),
         ));
+  }
+
+  FutureBuilder<List<Movies>> future() {
+    return FutureBuilder<List<Movies>>(
+        future: fetchAllMovies(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('An error has occurred!'),
+            );
+          } else if (snapshot.hasData) {
+            return IconButton(
+              iconSize: 30.0,
+              //padding: EdgeInsets.only(right: 28.0),
+              icon: Icon(
+                  _selectedIndex == 3 || _selectedIndex == 8
+                      ? Icons.music_note
+                      : Icons.shuffle,
+                  color: _selectedIndex == 5
+                      ? Colors.amber
+                      : (_selectedIndex == 8
+                          ? Colors.transparent
+                          : Colors.white)),
+              onPressed: () {
+                setState(() {
+                  var rng = Random();
+                  int i = rng.nextInt(20);
+
+                  if (_selectedIndex == 0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DetailMoviePage(snapshot.data![i]),
+                      ),
+                    );
+                  }
+                  if (_selectedIndex == 2 ||
+                      _selectedIndex == 4 ||
+                      _selectedIndex == 5 ||
+                      _selectedIndex == 6) {
+                    _selectedIndex = 6;
+                  } else if (_selectedIndex == 3) {
+                    _selectedIndex = 2;
+                  }
+                });
+              },
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+  }
+
+  FutureBuilder<List<Musics>> future2() {
+    return FutureBuilder<List<Musics>>(
+        future: fetchAllMusics(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('An error has occurred!'),
+            );
+          } else if (snapshot.hasData) {
+            return IconButton(
+              iconSize: 30.0,
+              //padding: EdgeInsets.only(right: 28.0),
+              icon: Icon(
+                  _selectedIndex == 3 || _selectedIndex == 8
+                      ? Icons.music_note
+                      : Icons.shuffle,
+                  color: _selectedIndex == 5
+                      ? Colors.white
+                      : (_selectedIndex == 8
+                          ? Colors.transparent
+                          : Colors.white)),
+              onPressed: () {
+                setState(() {
+                  var rng = Random();
+                  int i = rng.nextInt(9);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailMusicPage(snapshot.data![i]),
+                    ),
+                  );
+                  /*  }*/
+                  if (_selectedIndex == 2 ||
+                      _selectedIndex == 4 ||
+                      _selectedIndex == 5 ||
+                      _selectedIndex == 6) {
+                    _selectedIndex = 6;
+                  } else if (_selectedIndex == 3) {
+                    _selectedIndex = 2;
+                  }
+                });
+              },
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+  }
+
+  FutureBuilder<List<Books>> future3() {
+    return FutureBuilder<List<Books>>(
+        future: fetchAllBooks(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('An error has occurred!'),
+            );
+          } else if (snapshot.hasData) {
+            return IconButton(
+              iconSize: 30.0,
+              //padding: EdgeInsets.only(right: 28.0),
+              icon: Icon(
+                  _selectedIndex == 3 || _selectedIndex == 8
+                      ? Icons.music_note
+                      : Icons.shuffle,
+                  color: _selectedIndex == 5
+                      ? Colors.amber
+                      : (_selectedIndex == 8
+                          ? Colors.transparent
+                          : Colors.white)),
+              onPressed: () {
+                setState(() {
+                  var rng = Random();
+                  int i = rng.nextInt(14);
+
+                  if (_selectedIndex == 1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailBookPage(snapshot.data![i]),
+                      ),
+                    );
+                  }
+                  if (_selectedIndex == 2 ||
+                      _selectedIndex == 4 ||
+                      _selectedIndex == 5 ||
+                      _selectedIndex == 6) {
+                    _selectedIndex = 6;
+                  } else if (_selectedIndex == 3) {
+                    _selectedIndex = 2;
+                  }
+                });
+              },
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
 
   void showFullScreenMenu(BuildContext context) {
@@ -250,10 +400,9 @@ class _HomePageState extends State<HomePage> {
             FullScreenMenu.hide();
             var logOut = await Authentication().logOut();
             if (logOut == 'true') {
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (context) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const LoginScreen();
-              }), (route) => false);
+              }));
             } else {
               showDialog(
                 context: context,

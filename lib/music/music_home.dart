@@ -173,7 +173,6 @@ class _MusicState extends State<Music> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(60),
                                   image: DecorationImage(
                                     image: NetworkImage(
                                       list[index].poster,
@@ -215,6 +214,9 @@ class _MusicState extends State<Music> {
                       );
                     },
                   ),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: buildIndicator(list),
@@ -232,7 +234,7 @@ class _MusicState extends State<Music> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            movieListView(
+            musicListView(
               list: list,
             ),
           ],
@@ -254,8 +256,8 @@ class _MusicState extends State<Music> {
 }
 
 // ignore: camel_case_types
-class movieListView extends StatelessWidget {
-  const movieListView({Key? key, required this.list}) : super(key: key);
+class musicListView extends StatelessWidget {
+  const musicListView({Key? key, required this.list}) : super(key: key);
 
   final List<Musics> list;
 
