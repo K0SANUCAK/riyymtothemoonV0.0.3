@@ -22,7 +22,7 @@ class NotWorking extends StatelessWidget {
               Image.asset("images/loading.png"),
             ],
           ),
-          const Expanded(child: const Text("")),
+          const Expanded(child: Text("")),
         ],
       ),
     );
