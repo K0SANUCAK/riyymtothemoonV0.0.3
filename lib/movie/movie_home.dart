@@ -291,8 +291,21 @@ class _FilmState extends State<Film> {
                 ],
               ),
             ),*/
-            movieListView(
-              list: list,
+            const Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "Trending Movies",
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: movieListView(
+                list: list,
+              ),
             ),
           ],
         ),

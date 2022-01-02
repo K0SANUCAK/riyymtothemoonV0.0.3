@@ -342,20 +342,23 @@ Widget movieBack(List<FavoriteMovie> list) {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Text(
-                    list.first.title.toUpperCase(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                      onPressed: () async {
-                        await launch(
-                            "https://www.youtube.com/results?search_query=${list.first.title} trailer",
-                            forceSafariVC: false);
-                      },
-                      icon: const Icon(Icons.play_circle_fill_outlined))
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Text(
+                      list.first.title.toUpperCase(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                        onPressed: () async {
+                          await launch(
+                              "https://www.youtube.com/results?search_query=${list.first.title} trailer",
+                              forceSafariVC: false);
+                        },
+                        icon: const Icon(Icons.play_circle_fill_outlined))
+                  ],
+                ),
               ),
               Text(
                 list.first.overview,

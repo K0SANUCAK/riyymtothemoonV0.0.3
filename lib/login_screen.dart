@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riyym/dataBase/authentication.dart';
 import 'package:riyym/homepage.dart';
 
+import 'forgot_password_screen.dart';
 import 'registration_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const CircleAvatar(
-                  radius: 50,
+                  radius: 80,
                   backgroundImage: AssetImage('images/RIYYMmusic.png'),
                 ),
                 SizedBox(
@@ -124,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       return HomePage();
                                     },
                                   ),
-                                  (route) => false,
+                                  (route) => true,
                                 );
                               } else {
                                 showDialog(
@@ -136,28 +137,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 );
                               }
-
-                              // if ((myController.text == username) &&
-                              //     (myControllerPw.text == password)) {
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) {
-                              //         return HomePage();
-                              //       },
-                              //     ),
-                              //   );
-                              // } else {
-                              //   showDialog(
-                              //     context: context,
-                              //     builder: (context) {
-                              //       return AlertDialog(
-                              //         content: Text(
-                              //             'Wrong mail or password!\n(mail=name, password=123)'),
-                              //       );
-                              //     },
-                              //   );
-                              // }
                             },
                           ),
                         ],
@@ -194,6 +173,34 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(
                         height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Text('Forgot password?'),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ForgotPassword();
+                                  },
+                                ),
+                                (route) => false,
+                              );
+                            },
+                            child: const Text(
+                              ' Click Here ',
+                              style: TextStyle(
+                                fontFamily: 'Pacifico',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.teal,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

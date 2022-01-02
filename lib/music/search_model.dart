@@ -21,7 +21,11 @@ class SearchPage extends StatelessWidget {
           future: fetchMusicSearch(word),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return const Center(child: Text("error"));
+              return const Center(
+                  child: Text(
+                "Nothing found",
+                style: TextStyle(fontSize: 24),
+              ));
             } else if (snapshot.hasData) {
               return searchList(snapshot.data!);
             } else {
